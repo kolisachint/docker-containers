@@ -1,0 +1,10 @@
+
+FROM ubuntu:20.04
+# Ensure apt is in non-interactive to avoid prompts
+RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+  && apt-get -y install python3.8-minimal \
+  && apt-get -y install pip \
+
+# docker build . --no-cache -t ubuntu20.04:python3.8 -f python3.8-Dockerfile
+# docker tag ubuntu20.04:python3.8 kolisachint/ubuntu20.04:python3.8
+# docker push kolisachint/ubuntu20.04:python3.8
