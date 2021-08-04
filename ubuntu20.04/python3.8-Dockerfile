@@ -1,14 +1,11 @@
 FROM ubuntu:20.04
 
 # Ensure apt is in non-interactive to avoid prompts
-RUN export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get autoremove -y \
+RUN export DEBIAN_FRONTEND=noninteractive && apt-get update  \
   && apt-get -y install --no-install-recommends python3.8-minimal python3-pip \
-  && pip3 --disable-pip-version-check --no-cache-dir \
-      install "apache-airflow==${AIRFLOW_VERSION}" --constraint "${CONSTRAINT_URL}" \
-  && rm -rf /var/lib/apt/lists/* \
-  && rm -rf /tmp/pip-tmp \
-  && chmod -R g+rwX /scripts
+  && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*  
 
+# docker build . -t ubuntu20.04:python3.8 -f python3.8-Dockerfile
 # docker build . --no-cache -t ubuntu20.04:python3.8 -f python3.8-Dockerfile
 # docker tag ubuntu20.04:python3.8 kolisachint/ubuntu20.04:python3.8
 # docker push kolisachint/ubuntu20.04:python3.8
