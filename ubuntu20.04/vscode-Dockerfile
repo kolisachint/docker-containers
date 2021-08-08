@@ -1,0 +1,50 @@
+# Start from the code-server Debian base image
+FROM codercom/code-server:latest
+
+USER coder
+
+# Apply VS Code settings
+COPY imgfs/opt/buildimg/scripts/vscode-settings.json .local/share/code-server/User/settings.json
+
+# Use bash shell
+ENV SHELL=/bin/bash
+
+# Install unzip + rclone (support for remote filesystem)
+RUN sudo apt-get update && sudo apt-get install unzip -y
+RUN curl https://rclone.org/install.sh | sudo bash
+
+# Copy rclone tasks to /tmp, to potentially be used
+COPY imgfs/opt/buildimg/scripts/vscode-rclone-tasks.json /tmp/rclone-tasks.json
+
+# Fix permissions for code-server
+RUN sudo chown -R coder:coder /home/coder/.local
+
+# You can add custom software and dependencies for your environment below
+# -----------
+
+# Install a VS Code extension:
+# Note: we use a different marketplace than VS Code. See https://github.com/cdr/code-server/blob/main/docs/FAQ.md#differences-compared-to-vs-code
+# RUN code-server --install-extension esbenp.prettier-vscode
+
+# Install apt packages:
+# RUN sudo apt-get install -y ubuntu-make
+
+# Copy files: 
+# COPY deploy-container/myTool /home/coder/myTool
+
+# -----------
+
+# Port
+ENV PORT=8080
+
+# Use our custom entrypoint script first
+COPY imgfs/opt/buildimg/scripts/vscode-entrypoint.sh /usr/bin/deploy-container-entrypoint.sh
+ENTRYPOINT ["/usr/bin/deploy-container-entrypoint.sh"]
+
+
+# docker build . -t ubuntu20.04:vscode -f vscode-Dockerfile
+# docker build . --no-cache -t ubuntu20.04:vscode -f vscode-Dockerfile
+# docker tag ubuntu20.04:vscode kolisachint/ubuntu20.04:vscode
+# docker push kolisachint/ubuntu20.04:vscode
+# docker run 8080:8080 kolisachint/ubuntu20.04:vscode
+# password ~/.config/code-server/config.yaml 815bb8d2cd37aa6f5ad75479
