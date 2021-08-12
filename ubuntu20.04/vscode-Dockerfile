@@ -46,5 +46,5 @@ ENTRYPOINT ["/usr/bin/deploy-container-entrypoint.sh"]
 # docker build . --no-cache -t ubuntu20.04:vscode -f vscode-Dockerfile
 # docker tag ubuntu20.04:vscode kolisachint/ubuntu20.04:vscode
 # docker push kolisachint/ubuntu20.04:vscode
-# docker run 8080:8080 kolisachint/ubuntu20.04:vscode
+# docker run -d -p 8080:80 kolisachint/ubuntu20.04:vscode
 # password ~/.config/code-server/config.yaml 815bb8d2cd37aa6f5ad75479
