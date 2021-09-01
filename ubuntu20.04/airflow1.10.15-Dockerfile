@@ -21,7 +21,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && apt-get update  \
         /usr/share/doc-base \
   && useradd -ms /bin/bash -d ${AIRFLOW_HOME} airflow \
   && chown -R airflow: /opt/buildimg/  \
-  && chmod -R g+rwX /opt/buildimg/
+  && chmod -R g+rwX /opt/buildimg/ \
   && chown -R airflow: ${AIRFLOW_HOME}
 
 ADD imgfs/opt/buildimg/config/airflow1.10.15-airflow.cfg ${AIRFLOW_HOME}/airflow.cfg
