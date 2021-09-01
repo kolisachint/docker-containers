@@ -6,6 +6,7 @@ ARG CONSTRAINT_URL="https://raw.githubusercontent.com/apache/airflow/constraints
 ENV AIRFLOW_HOME=/appl/airflow/
 
 ADD imgfs/opt/buildimg/scripts/airflow1.10.15-entrypoint.sh /opt/buildimg/scripts/airflow1.10.15-entrypoint.sh
+ADD imgfs/opt/buildimg/config/airflow1.10.15-airflow.cfg ${AIRFLOW_HOME}/airflow.cfg
 
 # Ensure apt is in non-interactive to avoid prompts
 RUN export DEBIAN_FRONTEND=noninteractive && apt-get update  \
@@ -19,14 +20,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && apt-get update  \
         /usr/share/man \
         /usr/share/doc \
         /usr/share/doc-base \
-  && useradd -ms /bin/bash -d ${AIRFLOW_HOME} airflow \
-  && chown -R airflow: /opt/buildimg/  \
   && chmod -R g+rwX /opt/buildimg/ \
-  && chown -R airflow: ${AIRFLOW_HOME}
 
-ADD imgfs/opt/buildimg/config/airflow1.10.15-airflow.cfg ${AIRFLOW_HOME}/airflow.cfg
-
-USER airflow
 WORKDIR ${AIRFLOW_HOME}
 ENTRYPOINT ["/opt/buildimg/scripts/airflow1.10.15-entrypoint.sh"]
 
@@ -43,4 +38,3 @@ EXPOSE 80
 # docker container rm 51eb91800fa4   
 # docker build . -t ubuntu20.04:airflow1.10.15 -f airflow1.10.15-Dockerfile
 # docker run -it -d --name airflow1.10.15 ubuntu20.04:airflow1.10.15 bash
- 
