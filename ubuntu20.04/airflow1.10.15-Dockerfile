@@ -34,5 +34,5 @@ EXPOSE 80
 # docker container stop 51eb91800fa4  
 # docker container rm 51eb91800fa4   
 # docker build . --no-cache -t ubuntu20.04:airflow1.10.15 -f airflow1.10.15-Dockerfile
-# docker run -it -d --name airflow1.10.15 ubuntu20.04:airflow1.10.15 bash
+# docker run -it -d --name airflow1.10.15 -p 80:80 ubuntu20.04:airflow1.10.15 bash
 # docker exec -it  3796a8f35b10    bash
