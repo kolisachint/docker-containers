@@ -6,7 +6,6 @@ ARG CONSTRAINT_URL="https://raw.githubusercontent.com/apache/airflow/constraints
 ENV AIRFLOW_HOME=/appl/airflow/
 
 ADD imgfs/opt/buildimg/scripts/airflow1.10.15-entrypoint.sh /opt/buildimg/scripts/airflow1.10.15-entrypoint.sh
-ADD imgfs/opt/buildimg/config/airflow1.10.15-airflow.cfg ${AIRFLOW_HOME}/airflow.cfg
 
 # Ensure apt is in non-interactive to avoid prompts
 RUN export DEBIAN_FRONTEND=noninteractive && apt-get update  \
@@ -23,6 +22,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && apt-get update  \
   && useradd -ms /bin/bash -d ${AIRFLOW_HOME} airflow \
   && chown -R airflow: /opt/buildimg/  \
   && chown -R airflow: ${AIRFLOW_HOME}
+
+ADD imgfs/opt/buildimg/config/airflow1.10.15-airflow.cfg ${AIRFLOW_HOME}/airflow.cfg
 
 USER airflow
 WORKDIR ${AIRFLOW_HOME}
