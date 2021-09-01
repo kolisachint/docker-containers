@@ -28,7 +28,7 @@ EXPOSE 8080
 # docker build . --no-cache -t ubuntu20.04:airflow1.10.15 -f airflow1.10.15-Dockerfile
 # docker tag ubuntu20.04:airflow1.10.15 kolisachint/ubuntu20.04:airflow1.10.15
 # docker push kolisachint/ubuntu20.04:airflow1.10.15
-# docker run -d -p 8080:80 kolisachint/ubuntu20.04:airflow1.10.15
+# docker run -d -p 80:8080 kolisachint/ubuntu20.04:airflow1.10.15
 
 # docker container ls
 # docker container stop 51eb91800fa4  
