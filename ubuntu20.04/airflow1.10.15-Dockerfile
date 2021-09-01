@@ -18,9 +18,9 @@ RUN export DEBIAN_FRONTEND=noninteractive && apt-get update  \
         /usr/share/man \
         /usr/share/doc \
         /usr/share/doc-base \
-  && chmod -R g+rwX /opt/buildimg
+  && chmod -R g+rwX /opt/buildimg/scripts/
 
-# ENTRYPOINT ["/opt/buildimg/scripts/airflow1.10.15-entrypoint.sh"]
+ENTRYPOINT ["/opt/buildimg/scripts/airflow1.10.15-entrypoint.sh"]
 
 EXPOSE 80
 
