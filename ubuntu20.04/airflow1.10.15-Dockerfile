@@ -2,7 +2,7 @@ FROM ubuntu:20.04
 
 ARG AIRFLOW_VERSION=1.10.15
 ARG PYTHON_VERSION=3.8
-ARG CONSTRAINT_URL="https://raw.githubusercontent.com/apache/airflow/constraints-${AIRFLOW_VERSION}/${PYTHON_VERSION}.txt"
+ARG CONSTRAINT_URL="https://raw.githubusercontent.com/apache/airflow/constraints-${AIRFLOW_VERSION}/constraints-${PYTHON_VERSION}.txt"
 
 ADD imgfs/opt/buildimg/scripts/airflow1.10.15-entrypoint.sh /opt/buildimg/scripts/airflow1.10.15-entrypoint.sh
 
