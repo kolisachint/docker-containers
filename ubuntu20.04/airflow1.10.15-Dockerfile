@@ -4,7 +4,7 @@ ARG AIRFLOW_VERSION=1.10.15
 ARG PYTHON_VERSION=3.8
 ARG CONSTRAINT_URL="https://raw.githubusercontent.com/apache/airflow/constraints-${AIRFLOW_VERSION}/constraints-${PYTHON_VERSION}.txt"
 
-ADD imgfs/opt/buildimg/scripts/airflow1.10.15-entrypoint.sh /opt/buildimg/scripts/airflow1.10.15-entrypoint.sh
+COPY imgfs/opt/buildimg/scripts/airflow1.10.15-entrypoint.sh /opt/buildimg/scripts/airflow1.10.15-entrypoint.sh
 
 # Ensure apt is in non-interactive to avoid prompts
 RUN export DEBIAN_FRONTEND=noninteractive && apt-get update  \
@@ -18,7 +18,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && apt-get update  \
         /usr/share/man \
         /usr/share/doc \
         /usr/share/doc-base \
-  && chmod -R g+rwX /opt/buildimg/scripts/
+  && chmod -R 755 /opt/buildimg/scripts/
 
 ENTRYPOINT ["/opt/buildimg/scripts/airflow1.10.15-entrypoint.sh"]
 
@@ -28,11 +28,4 @@ EXPOSE 8080
 # docker build . --no-cache -t ubuntu20.04:airflow1.10.15 -f airflow1.10.15-Dockerfile
 # docker tag ubuntu20.04:airflow1.10.15 kolisachint/ubuntu20.04:airflow1.10.15
 # docker push kolisachint/ubuntu20.04:airflow1.10.15
-# docker run -d -p 80:8080 kolisachint/ubuntu20.04:airflow1.10.15
-
-# docker container ls
-# docker container stop 51eb91800fa4  
-# docker container rm 51eb91800fa4   
-# docker build . --no-cache -t ubuntu20.04:airflow1.10.15 -f airflow1.10.15-Dockerfile
-# docker run -it -d --name airflow1.10.15 -p 80:80 ubuntu20.04:airflow1.10.15 bash
-# docker exec -it  3796a8f35b10    bash
+# docker run -d -p 80:8080 --name airflow1.10.15 -p 80:80 ubuntu20.04:airflow1.10.15 
