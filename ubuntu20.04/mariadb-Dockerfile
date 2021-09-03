@@ -1,0 +1,31 @@
+FROM ubuntu:20.04
+
+ENV MYSQL_USER=mysql \
+    MYSQL_DATA_DIR=/var/lib/mysql \
+    MYSQL_RUN_DIR=/run/mysqld \
+    MYSQL_LOG_DIR=/var/log/mysql
+
+# Ensure apt is in non-interactive to avoid prompts
+RUN export DEBIAN_FRONTEND=noninteractive && apt-get update  \
+  && apt-get -y install --no-install-recommends mariadb-server \
+  && apt-get autoremove -y && apt-get clean -y \
+  && rm -rf /var/lib/apt/lists/*  \
+        /tmp/* \
+        /var/tmp/* \
+        /usr/share/man \
+        /usr/share/doc \
+        /usr/share/doc-base 
+
+COPY imgfs/opt/buildimg/scripts/mariadb-entrypoint.sh /opt/buildimg/scripts/mariadb-entrypoint.sh
+RUN chmod 755 /opt/buildimg/scripts/mariadb-entrypoint.sh
+
+EXPOSE 3306
+
+VOLUME ["${MYSQL_DATA_DIR}", "${MYSQL_RUN_DIR}"]
+ENTRYPOINT ["/opt/buildimg/scripts/mariadb-entrypoint.sh"]
+CMD ["/usr/bin/mysqld_safe"]
+
+# docker build . -t ubuntu20.04:mariadb -f mariadb-Dockerfile
+# docker build . --no-cache -t ubuntu20.04:mariadb -f mariadb-Dockerfile
+# docker run -d -p 60000:3306 --name mariadb -e 'DB_REMOTE_ROOT_NAME=airflow' -e 'DB_REMOTE_ROOT_PASS=airflow123' ubuntu20.04:mariadb 
+# docker run -d --net=host --name mariadb -e 'DB_USER=airflow' -e 'DB_PASS=airflow123'  -e 'DB_NAME=airflow' ubuntu20.04:mariadb 
