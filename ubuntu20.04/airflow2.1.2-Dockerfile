@@ -1,10 +1,29 @@
 FROM ubuntu:20.04
 
+# Never prompt the user for choices on installation/configuration of packages
+ENV DEBIAN_FRONTEND noninteractive
+ENV TERM linux
+
+# Airflow
+ARG AIRFLOW_HOME=/appl/airflow
+ARG AIRFLOW_DEPS=""
+ARG PYTHON_DEPS=""
+ENV AIRFLOW_HOME=/appl/airflow
+
+# Define en_US.
+ENV LANGUAGE en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LC_ALL en_US.UTF-8
+ENV LC_CTYPE en_US.UTF-8
+ENV LC_MESSAGES en_US.UTF-8
+
+
 ARG AIRFLOW_VERSION=2.1.2
 ARG PYTHON_VERSION=3.8
 ARG CONSTRAINT_URL="https://raw.githubusercontent.com/apache/airflow/constraints-${AIRFLOW_VERSION}/constraints-no-providers-${PYTHON_VERSION}.txt"
 
 COPY imgfs/opt/buildimg/scripts/airflow2.1.2-entrypoint.sh /opt/buildimg/scripts/airflow2.1.2-entrypoint.sh
+COPY imgfs/opt/buildimg/config/airflow2.1.2-requirements.txt /opt/buildimg/config/airflow2.1.2-requirements.txt
 
 # Ensure apt is in non-interactive to avoid prompts
 RUN export DEBIAN_FRONTEND=noninteractive && apt-get update  \
@@ -21,6 +40,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && apt-get update  \
   && chmod -R 755 /opt/buildimg/scripts/
 
 ENTRYPOINT ["/opt/buildimg/scripts/airflow2.1.2-entrypoint.sh"]
+CMD ["webserver"]
 
 EXPOSE 8080 
 

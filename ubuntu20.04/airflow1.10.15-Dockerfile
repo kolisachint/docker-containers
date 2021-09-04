@@ -1,10 +1,27 @@
 FROM ubuntu:20.04
 
+# Airflow
+ARG AIRFLOW_HOME=/appl/airflow
+ARG AIRFLOW_DEPS=""
+ARG PYTHON_DEPS=""
+ENV AIRFLOW_HOME=/appl/airflow
+
+# Define en_US.
+ENV LANGUAGE en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LC_ALL en_US.UTF-8
+ENV LC_CTYPE en_US.UTF-8
+ENV LC_MESSAGES en_US.UTF-8
+
+
+
 ARG AIRFLOW_VERSION=1.10.15
 ARG PYTHON_VERSION=3.8
 ARG CONSTRAINT_URL="https://raw.githubusercontent.com/apache/airflow/constraints-${AIRFLOW_VERSION}/constraints-${PYTHON_VERSION}.txt"
 
 COPY imgfs/opt/buildimg/scripts/airflow1.10.15-entrypoint.sh /opt/buildimg/scripts/airflow1.10.15-entrypoint.sh
+COPY imgfs/opt/buildimg/config/airflow1.10.15-requirements.txt /opt/buildimg/config/airflow1.10.15-requirements.txt
+COPY imgfs/opt/buildimg/config/airflow1.10.15-airflow.cfg /appl/airflow/airflow.cfg
 
 # Ensure apt is in non-interactive to avoid prompts
 RUN export DEBIAN_FRONTEND=noninteractive && apt-get update  \
@@ -21,6 +38,9 @@ RUN export DEBIAN_FRONTEND=noninteractive && apt-get update  \
   && chmod -R 755 /opt/buildimg/scripts/
 
 ENTRYPOINT ["/opt/buildimg/scripts/airflow1.10.15-entrypoint.sh"]
+CMD ["webserver"]
+
+#ENTRYPOINT ["/bin/bash","sleep 400"]
 
 EXPOSE 8080
 
@@ -28,4 +48,4 @@ EXPOSE 8080
 # docker build . --no-cache -t ubuntu20.04:airflow1.10.15 -f airflow1.10.15-Dockerfile
 # docker tag ubuntu20.04:airflow1.10.15 kolisachint/ubuntu20.04:airflow1.10.15
 # docker push kolisachint/ubuntu20.04:airflow1.10.15
-# docker run -d -p 80:8080 --name airflow1.10.15 -p 80:80 ubuntu20.04:airflow1.10.15 
+# docker run -d -p 80:8080 --name airflow1.10.15 ubuntu20.04:airflow1.10.15 sh
