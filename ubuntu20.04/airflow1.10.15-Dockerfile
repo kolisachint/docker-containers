@@ -34,13 +34,11 @@ RUN export DEBIAN_FRONTEND=noninteractive && apt-get update  \
         /var/tmp/* \
         /usr/share/man \
         /usr/share/doc \
-        /usr/share/doc-base \
+        /usr/share/doc-base \ 
   && chmod -R 755 /opt/buildimg/scripts/
 
-ENTRYPOINT ["/opt/buildimg/scripts/airflow1.10.15-entrypoint.sh"]
-CMD ["webserver"]
-
-#ENTRYPOINT ["/bin/bash","sleep 400"]
+#ENTRYPOINT ["/opt/buildimg/scripts/airflow1.10.15-entrypoint.sh"]
+#CMD ["webserver"]
 
 EXPOSE 8080
 

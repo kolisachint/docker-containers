@@ -1,9 +1,21 @@
 FROM ubuntu:20.04
 
+COPY imgfs/opt/buildimg/scripts/python3.9-entrypoint.sh /opt/buildimg/scripts/python3.9-entrypoint.sh
+
 # Ensure apt is in non-interactive to avoid prompts
 RUN export DEBIAN_FRONTEND=noninteractive && apt-get update  \
-  && apt-get -y install --no-install-recommends python3.9-minimal python3-pip \
-  && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*  
+  && apt-get -y install --no-install-recommends python3.9-minimal python3-pip git ssh \
+  && apt-get autoremove -y && apt-get clean -y  \
+  && rm -rf /var/lib/apt/lists/*  \
+        /tmp/* \
+        /var/tmp/* \
+        /usr/share/man \
+        /usr/share/doc \
+        /usr/share/doc-base \
+  && chmod -R 755 /opt/buildimg/scripts/
+
+#ENTRYPOINT ["tail", "-f", "/dev/null"]
+ENTRYPOINT ["/opt/buildimg/scripts/python3.9-entrypoint.sh"]
 
 # docker build . -t ubuntu20.04:python3.9 -f python3.9-Dockerfile
 # docker build . --no-cache -t ubuntu20.04:python3.9 -f python3.9-Dockerfile

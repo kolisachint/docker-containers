@@ -9,7 +9,7 @@ TRY_LOOP="20"
 
 # Global defaults and back-compat
 : "${AIRFLOW_HOME:="/appl/airflow"}"
-: "${AIRFLOW__CORE__FERNET_KEY:=${FERNET_KEY:=$(python -c "from cryptography.fernet import Fernet; FERNET_KEY = Fernet.generate_key().decode(); print(FERNET_KEY)")}}"
+: "${AIRFLOW__CORE__FERNET_KEY:=${FERNET_KEY:=$(python3 -c "from cryptography.fernet import Fernet; FERNET_KEY = Fernet.generate_key().decode(); print(FERNET_KEY)")}}"
 : "${AIRFLOW__CORE__EXECUTOR:=${EXECUTOR:-Sequential}Executor}"
 
 # Load DAGs examples (default: Yes)
@@ -24,8 +24,8 @@ export \
   AIRFLOW__CORE__LOAD_EXAMPLES \
 
 # Install custom python package if requirements.txt is present
-if [ -e "/opt/buildimg/config/airflow2.1.2-requirements.txt" ]; then
-    $(command -v pip) install --user -r /opt/buildimg/config/airflow2.1.2-requirements.txt
+if [ -e "/opt/buildimg/config/airflow1.10.15-requirements.txt" ]; then
+    $(command -v pip) install --user -r /opt/buildimg/config/airflow1.10.15-requirements.txt
 fi
 
 wait_for_port() {

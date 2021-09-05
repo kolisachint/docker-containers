@@ -1,0 +1,12 @@
+version: "3.9"
+    
+services:
+  python3.9:
+    build: 
+      context: .
+      dockerfile: python3.9-Dockerfile
+    image: ubuntu20.04:python3.9    
+    volumes:
+      - /Users/sachinkoli/my-secrets:/my-secrets
+    environment:
+      GIT_SRC: git@github.com:kolisachint/csr2teamswebhook.git
