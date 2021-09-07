@@ -9,4 +9,6 @@ services:
     volumes:
       - /Users/sachinkoli/my-secrets:/my-secrets
     environment:
-      GIT_SRC: git@github.com:kolisachint/csr2teamswebhook.git
+      GIT_SRC: git@github.com:kolisachint/rest-api-example.git
+
+# docker-compose -f python3.9-DockerCompose.yml up 
